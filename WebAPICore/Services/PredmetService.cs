@@ -53,6 +53,5 @@ namespace WebAPICore.Services
             dbContext.SaveChanges();
             return predmet;
         }
-
     }
 }

@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace WebAPICore.Models
 {
-    public partial class Student
+    public class Student
     {
-        public int Id { get; set; }
-        public string Ime { get; set; }
-        public string Prezime { get; set; }
-        public int? Godina { get; set; }
-        public decimal? Prosek { get; set; }
-        public string Jmbg { get; set; }
-        public string Telefon { get; set; }
-        public string Email { get; set; }
+        public int Id;
+        public string Ime;
+        public string Prezime;
+        public int godina;
+        public decimal prosecnaOcena;
+        public List<Kurs> kursevi;
     }
 }

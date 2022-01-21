@@ -36,10 +36,6 @@ namespace WebAPICore
             options.UseSqlServer(Configuration["DbConnection"]));
 
             services.AddTransient<IPredmetService, PredmetService>();
-            services.AddTransient<IStudentService, StudentService>();
-            services.AddTransient<IProfesorService, ProfesorService>();
-            services.AddTransient<IKursService, KursService>();
-            services.AddTransient<IAdminService, AdminService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
