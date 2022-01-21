@@ -13,5 +13,6 @@ namespace WebAPICore.IServices
         Predmet AddPredmet(Predmet predmet);
         Predmet UpdatePredmet(Predmet predmet);
         Predmet DeletePredmet(int id);
+
     }
 }

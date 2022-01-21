@@ -62,5 +62,6 @@ namespace WebAPICore.Controllers
         {
             return predmetService.GetPredmetById(id);
         }
+
     }
 }
