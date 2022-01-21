@@ -15,7 +15,14 @@ namespace WebAPICore.Models
         {
         }
 
+        public virtual DbSet<Kurs> Kurs { get; set; }
+        public virtual DbSet<ListaOcena> ListaOcena { get; set; }
+        public virtual DbSet<Ocena> Ocena { get; set; }
         public virtual DbSet<Predmet> Predmet { get; set; }
+        public virtual DbSet<Profesor> Profesor { get; set; }
+        public virtual DbSet<ProfesorPredajeKurs> ProfesorPredajeKurs { get; set; }
+        public virtual DbSet<Student> Student { get; set; }
+        public virtual DbSet<StudentSlusaKurs> StudentSlusaKurs { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -28,16 +35,84 @@ namespace WebAPICore.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<ListaOcena>(entity =>
+            {
+                entity.Property(e => e.IdOcena)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.StudentId).HasColumnName("StudentID");
+            });
+
+            modelBuilder.Entity<Ocena>(entity =>
+            {
+                entity.Property(e => e.Datum).HasColumnType("date");
+
+                entity.Property(e => e.Komentar)
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.KursId).HasColumnName("KursID");
+
+                entity.Property(e => e.Ocena1).HasColumnName("Ocena");
+            });
 
             modelBuilder.Entity<Predmet>(entity =>
             {
                 entity.Property(e => e.Naziv)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+            });
 
-                entity.Property(e => e.Tip)
+            modelBuilder.Entity<Profesor>(entity =>
+            {
+                entity.Property(e => e.Ime)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Prezime)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ProfesorPredajeKurs>(entity =>
+            {
+                entity.Property(e => e.KursId).HasColumnName("KursID");
+
+                entity.Property(e => e.ProfesorId).HasColumnName("ProfesorID");
+            });
+
+            modelBuilder.Entity<Student>(entity =>
+            {
+                entity.Property(e => e.Email)
+                    .HasColumnName("email")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Ime)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Jmbg)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Prezime)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Prosek).HasColumnType("decimal(10, 2)");
+
+                entity.Property(e => e.Telefon)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<StudentSlusaKurs>(entity =>
+            {
+                entity.Property(e => e.KursId).HasColumnName("KursID");
+
+                entity.Property(e => e.StudentId).HasColumnName("StudentID");
             });
 
             OnModelCreatingPartial(modelBuilder);

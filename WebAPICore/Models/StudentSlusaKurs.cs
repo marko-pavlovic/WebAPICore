@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace WebAPICore.Models
 {
-    public partial class Profesor
+    public partial class StudentSlusaKurs
     {
         public int Id { get; set; }
-        public string Ime { get; set; }
-        public string Prezime { get; set; }
+        public int? StudentId { get; set; }
+        public int? KursId { get; set; }
     }
 }
