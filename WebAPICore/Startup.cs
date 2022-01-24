@@ -35,10 +35,10 @@ namespace WebAPICore
             services.AddDbContext<APICoreDBContext>(options =>
             options.UseSqlServer(Configuration["DbConnection"]));
 
-            services.AddTransient<IPredmetService, PredmetService>();
+            services.AddTransient<ISubjectService, SubjectService>();
             services.AddTransient<IStudentService, StudentService>();
-            services.AddTransient<IProfesorService, ProfesorService>();
-            services.AddTransient<IKursService, KursService>();
+            services.AddTransient<IProfessorService, ProfessorService>();
+            services.AddTransient<ICourseService, CourseService>();
             services.AddTransient<IAdminService, AdminService>();
         }
 

@@ -13,5 +13,6 @@ namespace WebAPICore.IServices
         Student AddStudent(Student student);
         Student UpdateStudent(Student student);
         Student DeleteStudent(int id);
+        IEnumerable<Course> AttendingCourses(int id);
     }
 }

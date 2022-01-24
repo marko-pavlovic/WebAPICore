@@ -6,11 +6,12 @@ using WebAPICore.Models;
 
 namespace WebAPICore.IServices
 {
-    public interface IAdminService
+    public interface ICourseService
     {
         IEnumerable<Course> GetCourse();
+        Course GetCourseById(int id);
         Course AddCourse(Course course);
-        IEnumerable<Student> GetStudent();
-        Student AddStudent(Student student);
+        Course UpdateCourse(Course course);
+        Course DeleteCourse(int id);
     }
 }

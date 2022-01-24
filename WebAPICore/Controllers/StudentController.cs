@@ -62,5 +62,13 @@ namespace WebAPICore.Controllers
         {
             return studentService.GetStudentById(id);
         }
+
+        [HttpGet]
+        [Route("[action]")]
+        [Route("api/Student/AttendingCourses")]
+        public IEnumerable<Course> AttendingCourses(int id)
+        {
+            return studentService.AttendingCourses(id);
+        }
     }
 }

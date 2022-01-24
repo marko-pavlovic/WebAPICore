@@ -13,21 +13,28 @@ namespace WebAPICore.Controllers
     [ApiController]
     public class AdminController : ControllerBase
     {
-        private object adminService;
+        private IAdminService adminService;
 
         public AdminController(IAdminService admin)
         {
             adminService = admin;
         }
 
-      
 
         [HttpPost]
         [Route("[action]")]
-        [Route("api/Admin/AddKurs")]
-        public Kurs AddKurs(Kurs kurs)
+        [Route("api/Admin/AddCourse")]
+        public Course AddKurs(Course course)
         {
-            return new Kurs();
+            return adminService.AddCourse(course);
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        [Route("api/Admin/AddStudent")]
+        public Student AddStudent(Student student)
+        {
+            return adminService.AddStudent(student);
         }
     }
 }
