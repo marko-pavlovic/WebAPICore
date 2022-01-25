@@ -6,6 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebAPICore.IServices;
 using WebAPICore.Models;
+using Aspose.Cells;
+using System.Net.Http;
 
 namespace WebAPICore.Controllers
 {
@@ -61,6 +63,14 @@ namespace WebAPICore.Controllers
         public Professor GetProfessorId(int id)
         {
             return professorService.GetProfessorById(id);
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        [Route("api/Professor/CreateSheet")]
+        public HttpResponseMessage CreateSheet(int id)
+        {
+            return professorService.CreateSheet(id);
         }
     }
 }

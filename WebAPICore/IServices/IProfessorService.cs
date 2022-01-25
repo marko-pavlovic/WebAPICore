@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using WebAPICore.Models;
 
@@ -16,5 +17,6 @@ namespace WebAPICore.IServices
         IEnumerable<Course> GetCourses(Professor professor);
         IEnumerable<Student> GetStudentsByCourse();
         bool AddMark(Student student, Course course, int mark);
+        HttpResponseMessage CreateSheet(int id);
     }
 }

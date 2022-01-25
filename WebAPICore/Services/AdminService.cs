@@ -67,7 +67,10 @@ namespace WebAPICore.Services
 
         public bool EnrollStudent(Student student, Course course)
         {
-            throw new NotImplementedException();
+            var studentCourse = new StudentCourse { CourseId = course.Id, StudentId = student.Id };
+            _dbContext.StudentCourse.Add(studentCourse);
+            _dbContext.SaveChanges();
+            return true;
         }
 
         public bool UnEnrollStudent(Student student, Course course)
