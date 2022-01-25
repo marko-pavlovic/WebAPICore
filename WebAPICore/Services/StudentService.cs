@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,90 +7,82 @@ using WebAPICore.Models;
 
 namespace WebAPICore.Services
 {
-    public class StudentService :IStudentService
+    public class StudentService : IStudentService
     {
-        APICoreDBContext dbContext;
-        public StudentService(APICoreDBContext _db)
+        APICoreDBContext _dbContext;
+        public StudentService(APICoreDBContext db)
         {
-            dbContext = _db;
+            _dbContext = db;
         }
 
-        public Student AddStudent(Student student)
+        public int AddStudent(Student student)
         {
-            if (student != null)
-            {
-                dbContext.Student.Add(student);
-                dbContext.SaveChanges();
-                return student;
-            }
-            return null;
+            _dbContext.Student.Add(student);
+            _dbContext.SaveChanges();
+
+            return student.Id;
         }
 
-        public Student DeleteStudent(int id)
+        public bool DeleteStudent(Student student)
         {
-            var student = dbContext.Student.FirstOrDefault(x => x.Id == id);
-            dbContext.Entry(student).State = EntityState.Deleted;
-            dbContext.SaveChanges();
-            return student;
+            _dbContext.Remove(student);
+            _dbContext.SaveChanges();
+
+            return true;
         }
 
         public IEnumerable<Student> GetStudent()
         {
-            var student = dbContext.Student.ToList();
+            var student = _dbContext.Student
+                .AsEnumerable();
+
             return student;
         }
 
         public Student GetStudentById(int id)
         {
-            var student = dbContext.Student.FirstOrDefault(x => x.Id == id);
+            var student = _dbContext.Student
+                .FirstOrDefault(s => s.Id == id);
+
             return student;
         }
 
-        public Student UpdateStudent(Student student)
+        public bool UpdateStudent(Student student)
         {
-            dbContext.Entry(student).State = EntityState.Modified;
-            dbContext.SaveChanges();
-            return student;
+            _dbContext.Update(student);
+            _dbContext.SaveChanges();
+
+            return true;
         }
 
         public IEnumerable<Course> AttendingCourses(int id)
         {
-            List<int> pom = new List<int>();
-            List<Course> ret = new List<Course>();
+            var courses = _dbContext.StudentCourse
+                .Where(sc => sc.StudentId == id)
+                .Select(sc => sc.Course)
+                .AsEnumerable();
 
-            var kurseviId = dbContext.StudentAttendCourse.Where(s => s.StudentId == id).Select(s => s.CourseId);
-            
-            foreach (var k in kurseviId)
-            {
-                var kursevi = dbContext.Course.Where(k => k.Id == id);
-                
-            }
-            
-            bool ad = true;
-            //foreach (int integer in pom)
-            //{
-            //    var kurseviKojeSlusa = dbContext.Kurs.Where(k => k.StudentId == id).Select(k => k);
-            //    ret.Add((Kurs)kurseviKojeSlusa);
-            //}
+            return courses;
+        }
 
-            return ret;
+        public async Task<IEnumerable<Course>> AttendingCoursesAsync(int id)
+        {
+            var courses = await _dbContext.StudentCourse
+                .Where(sc => sc.StudentId == id)
+                .Select(sc => sc.Course)
+                .ToListAsync();
 
-            //var studentSlusaKurs = dbContext.StudentSlusaKurs.ToList();
-            //for(int i=0; i<studentSlusaKurs.Count; i++)
-            //{
-            //    if (studentSlusaKurs[i].StudentId == id)
-            //        pom.Add((int)studentSlusaKurs[i].KursId);
-            //}
+            return courses;
+        }
 
-            //foreach(StudentSlusaKurs ssk in studentSlusaKurs)
-            //{
-            //    if(ssk.StudentId == id)
-            //    {
-            //        pom.Add((int)ssk.KursId);
-            //    }
-            //}
+        public IEnumerable<Mark> Marks(int id, int cId)
+        {
+            var marks = _dbContext.Mark
+                .Where(ss => ss.StudentId == id)
+                .Where(sc => sc.CourseId == cId)
+                .AsEnumerable();
 
-
+            return marks;
         }
     }
 }

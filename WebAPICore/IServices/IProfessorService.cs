@@ -13,5 +13,8 @@ namespace WebAPICore.IServices
         Professor AddProfessor(Professor professor);
         Professor UpdateProfessor(Professor professor);
         Professor DeleteProfessor(int id);
+        IEnumerable<Course> GetCourses(Professor professor);
+        IEnumerable<Student> GetStudentsByCourse();
+        bool AddMark(Student student, Course course, int mark);
     }
 }

@@ -19,9 +19,9 @@ namespace WebAPICore.Models
         public virtual DbSet<Mark> Mark { get; set; }
         public virtual DbSet<MarkList> MarkList { get; set; }
         public virtual DbSet<Professor> Professor { get; set; }
-        public virtual DbSet<ProfessorTeachCourse> ProfessorTeachCourse { get; set; }
+        public virtual DbSet<ProfessorCourse> ProfessorCourse { get; set; }
         public virtual DbSet<Student> Student { get; set; }
-        public virtual DbSet<StudentAttendCourse> StudentAttendCourse { get; set; }
+        public virtual DbSet<StudentCourse> StudentCourse { get; set; }
         public virtual DbSet<Subject> Subject { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -35,6 +35,15 @@ namespace WebAPICore.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Course>(entity =>
+            {
+                entity.HasOne(d => d.Subject)
+                    .WithMany(p => p.Course)
+                    .HasForeignKey(d => d.SubjectId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_Course_Subject");
+            });
+
             modelBuilder.Entity<Mark>(entity =>
             {
                 entity.Property(e => e.Comment)
@@ -44,6 +53,18 @@ namespace WebAPICore.Models
                 entity.Property(e => e.Date).HasColumnType("date");
 
                 entity.Property(e => e.Mark1).HasColumnName("Mark");
+
+                entity.HasOne(d => d.Course)
+                    .WithMany(p => p.Mark)
+                    .HasForeignKey(d => d.CourseId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_Mark_Course");
+
+                entity.HasOne(d => d.Student)
+                    .WithMany(p => p.Mark)
+                    .HasForeignKey(d => d.StudentId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_Mark_Student");
             });
 
             modelBuilder.Entity<MarkList>(entity =>
@@ -62,6 +83,22 @@ namespace WebAPICore.Models
                 entity.Property(e => e.Surname)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ProfessorCourse>(entity =>
+            {
+                entity.ToTable("Professor_Course");
+
+                entity.HasOne(d => d.Course)
+                    .WithMany(p => p.ProfessorCourse)
+                    .HasForeignKey(d => d.CourseId)
+                    .HasConstraintName("FK_Professor_Course_Course");
+
+                entity.HasOne(d => d.Professor)
+                    .WithMany(p => p.ProfessorCourse)
+                    .HasForeignKey(d => d.ProfessorId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_Professor_Course_Professor");
             });
 
             modelBuilder.Entity<Student>(entity =>
@@ -88,6 +125,23 @@ namespace WebAPICore.Models
                 entity.Property(e => e.Surname)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<StudentCourse>(entity =>
+            {
+                entity.ToTable("Student_Course");
+
+                entity.HasOne(d => d.Course)
+                    .WithMany(p => p.StudentCourse)
+                    .HasForeignKey(d => d.CourseId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_Student_Course_Course");
+
+                entity.HasOne(d => d.Student)
+                    .WithMany(p => p.StudentCourse)
+                    .HasForeignKey(d => d.StudentId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_Student_Course_Student");
             });
 
             modelBuilder.Entity<Subject>(entity =>

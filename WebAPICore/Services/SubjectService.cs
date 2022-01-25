@@ -10,18 +10,18 @@ namespace WebAPICore.Services
 {
     public class SubjectService : ISubjectService
     {
-        APICoreDBContext dbContext;
-        public SubjectService(APICoreDBContext _db)
+        APICoreDBContext _dbContext;
+        public SubjectService(APICoreDBContext db)
         {
-            dbContext = _db;
+            _dbContext = db;
         }
 
         public Subject AddSubject(Subject subject)
         {
             if (subject != null)
             {
-                dbContext.Subject.Add(subject);
-                dbContext.SaveChanges();
+                _dbContext.Subject.Add(subject);
+                _dbContext.SaveChanges();
                 return subject;
             }
             return null;
@@ -29,28 +29,28 @@ namespace WebAPICore.Services
 
         public Subject DeleteSubject(int id)
         {
-            var subject = dbContext.Subject.FirstOrDefault(x => x.Id == id);
-            dbContext.Entry(subject).State = EntityState.Deleted;
-            dbContext.SaveChanges();
+            var subject = _dbContext.Subject.FirstOrDefault(x => x.Id == id);
+            _dbContext.Entry(subject).State = EntityState.Deleted;
+            _dbContext.SaveChanges();
             return subject;
         }
 
         public IEnumerable<Subject> GetSubject()
         {
-            var subject = dbContext.Subject.ToList();
+            var subject = _dbContext.Subject.ToList();
             return subject;
         }
 
         public Subject GetSubjectById(int id)
         {
-            var subject = dbContext.Subject.FirstOrDefault(x => x.Id == id);
+            var subject = _dbContext.Subject.FirstOrDefault(x => x.Id == id);
             return subject;
         }
 
         public Subject UpdateSubject(Subject subject)
         {
-            dbContext.Entry(subject).State = EntityState.Modified;
-            dbContext.SaveChanges();
+            _dbContext.Entry(subject).State = EntityState.Modified;
+            _dbContext.SaveChanges();
             return subject;
         }
 

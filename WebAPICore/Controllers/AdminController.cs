@@ -20,7 +20,6 @@ namespace WebAPICore.Controllers
             adminService = admin;
         }
 
-
         [HttpPost]
         [Route("[action]")]
         [Route("api/Admin/AddCourse")]
@@ -35,6 +34,39 @@ namespace WebAPICore.Controllers
         public Student AddStudent(Student student)
         {
             return adminService.AddStudent(student);
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        [Route("api/Admin/GetStudent")]
+        public IEnumerable<Student> GetStudent()
+        {
+            return adminService.GetStudent();
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        [Route("api/Admin/GetCourse")]
+        public IEnumerable<Course> GetCourse()
+        {
+            return adminService.GetCourse();
+        }
+
+        [HttpPut]
+        [Route("[action]")]
+        [Route("api/Admin/EditStudent")]
+        public bool EditStudent(Student student)
+        {
+            return adminService.UpdateStudent(student);
+        }
+
+
+        [HttpDelete]
+        [Route("[action]")]
+        [Route("api/Admin/DeleteStudent")]
+        public bool DeleteStudent(Student student)
+        {
+            return adminService.DeleteStudent(student);
         }
     }
 }

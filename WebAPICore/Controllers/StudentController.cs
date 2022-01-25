@@ -27,11 +27,10 @@ namespace WebAPICore.Controllers
             return studentService.GetStudent();
         }
 
-
         [HttpPost]
         [Route("[action]")]
         [Route("api/Student/AddStudent")]
-        public Student AddStudent(Student student)
+        public int AddStudent(Student student)
         {
             return studentService.AddStudent(student);
         }
@@ -40,7 +39,7 @@ namespace WebAPICore.Controllers
         [HttpPut]
         [Route("[action]")]
         [Route("api/Student/EditStudent")]
-        public Student EditStudent(Student student)
+        public bool EditStudent(Student student)
         {
             return studentService.UpdateStudent(student);
         }
@@ -49,9 +48,9 @@ namespace WebAPICore.Controllers
         [HttpDelete]
         [Route("[action]")]
         [Route("api/Student/DeleteStudent")]
-        public Student DeleteStudent(int id)
+        public bool DeleteStudent(Student student)
         {
-            return studentService.DeleteStudent(id);
+            return studentService.DeleteStudent(student);
         }
 
 
@@ -70,5 +69,14 @@ namespace WebAPICore.Controllers
         {
             return studentService.AttendingCourses(id);
         }
+
+        [HttpGet]
+        [Route("[action]")]
+        [Route("api/Student/CourseMark")]
+        public IEnumerable<Mark> CourseMark(int id, int cId)
+        {
+            return studentService.Marks(id, cId);
+        }
+        
     }
 }

@@ -10,18 +10,18 @@ namespace WebAPICore.Services
 {
     public class CourseService:ICourseService
     {
-        APICoreDBContext dbContext;
-        public CourseService(APICoreDBContext _db)
+        APICoreDBContext _dbContext;
+        public CourseService(APICoreDBContext db)
         {
-            dbContext = _db;
+            _dbContext = db;
         }
 
         public Course AddCourse(Course course)
         {
             if (course != null)
             {
-                dbContext.Course.Add(course);
-                dbContext.SaveChanges();
+                _dbContext.Course.Add(course);
+                _dbContext.SaveChanges();
                 return course;
             }
             return null;
@@ -29,28 +29,28 @@ namespace WebAPICore.Services
 
         public Course DeleteCourse(int id)
         {
-            var course = dbContext.Course.FirstOrDefault(x => x.Id == id);
-            dbContext.Entry(course).State = EntityState.Deleted;
-            dbContext.SaveChanges();
+            var course = _dbContext.Course.FirstOrDefault(x => x.Id == id);
+            _dbContext.Entry(course).State = EntityState.Deleted;
+            _dbContext.SaveChanges();
             return course;
         }
 
         public IEnumerable<Course> GetCourse()
         {
-            var course = dbContext.Course.ToList();
+            var course = _dbContext.Course.ToList();
             return course;
         }
 
         public Course GetCourseById(int id)
         {
-            var course = dbContext.Course.FirstOrDefault(x => x.Id == id);
+            var course = _dbContext.Course.FirstOrDefault(x => x.Id == id);
             return course;
         }
 
         public Course UpdateCourse(Course course)
         {
-            dbContext.Entry(course).State = EntityState.Modified;
-            dbContext.SaveChanges();
+            _dbContext.Entry(course).State = EntityState.Modified;
+            _dbContext.SaveChanges();
             return course;
         }
     }

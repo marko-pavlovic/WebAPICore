@@ -10,18 +10,23 @@ namespace WebAPICore.Services
 {
     public class ProfessorService: IProfessorService
     {
-        APICoreDBContext dbContext;
-        public ProfessorService(APICoreDBContext _db)
+        APICoreDBContext _dbContext;
+        public ProfessorService(APICoreDBContext db)
         {
-            dbContext = _db;
+            _dbContext = db;
+        }
+
+        public bool AddMark(Student student, Course course, int mark)
+        {
+            throw new NotImplementedException();
         }
 
         public Professor AddProfessor(Professor professor)
         {
             if (professor != null)
             {
-                dbContext.Professor.Add(professor);
-                dbContext.SaveChanges();
+                _dbContext.Professor.Add(professor);
+                _dbContext.SaveChanges();
                 return professor;
             }
             return null;
@@ -29,28 +34,38 @@ namespace WebAPICore.Services
 
         public Professor DeleteProfessor(int id)
         {
-            var professor = dbContext.Professor.FirstOrDefault(x => x.Id == id);
-            dbContext.Entry(professor).State = EntityState.Deleted;
-            dbContext.SaveChanges();
+            var professor = _dbContext.Professor.FirstOrDefault(x => x.Id == id);
+            _dbContext.Entry(professor).State = EntityState.Deleted;
+            _dbContext.SaveChanges();
             return professor;
+        }
+
+        public IEnumerable<Course> GetCourses(Professor professor)
+        {
+            throw new NotImplementedException();
         }
 
         public IEnumerable<Professor> GetProfessor()
         {
-            var professor = dbContext.Professor.ToList();
+            var professor = _dbContext.Professor.ToList();
             return professor;
         }
 
         public Professor GetProfessorById(int id)
         {
-            var professor = dbContext.Professor.FirstOrDefault(x => x.Id == id);
+            var professor = _dbContext.Professor.FirstOrDefault(x => x.Id == id);
             return professor;
+        }
+
+        public IEnumerable<Student> GetStudentsByCourse()
+        {
+            throw new NotImplementedException();
         }
 
         public Professor UpdateProfessor(Professor professor)
         {
-            dbContext.Entry(professor).State = EntityState.Modified;
-            dbContext.SaveChanges();
+            _dbContext.Entry(professor).State = EntityState.Modified;
+            _dbContext.SaveChanges();
             return professor;
         }
     }

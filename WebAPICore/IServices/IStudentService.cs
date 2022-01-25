@@ -10,9 +10,10 @@ namespace WebAPICore.IServices
     {
         IEnumerable<Student> GetStudent();
         Student GetStudentById(int id);
-        Student AddStudent(Student student);
-        Student UpdateStudent(Student student);
-        Student DeleteStudent(int id);
+        int AddStudent(Student student);
+        bool UpdateStudent(Student student);
+        bool DeleteStudent(Student student);
         IEnumerable<Course> AttendingCourses(int id);
+        public IEnumerable<Mark> Marks(int id, int cId);
     }
 }

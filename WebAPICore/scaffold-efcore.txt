@@ -1,0 +1,1 @@
+﻿Scaffold-DbContext "Server=94.228.237.14\SQL2017; Database=APICoreDB; User ID=MarkoDB;Password=Test12358;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force

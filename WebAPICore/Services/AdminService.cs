@@ -10,17 +10,17 @@ namespace WebAPICore.Services
 {
     public class AdminService : IAdminService
     {
-        APICoreDBContext dbContext;
-        public AdminService(APICoreDBContext _db)
+        APICoreDBContext _dbContext;
+        public AdminService(APICoreDBContext db)
         {
-            dbContext = _db;
+            _dbContext = db;
         }
         public Course AddCourse(Course course)
         {
             if (course != null)
             {
-                dbContext.Course.Add(course);
-                dbContext.SaveChanges();
+                _dbContext.Course.Add(course);
+                _dbContext.SaveChanges();
                 return course;
             }
             return null;
@@ -30,8 +30,8 @@ namespace WebAPICore.Services
         {
             if (student != null)
             {
-                dbContext.Student.Add(student);
-                dbContext.SaveChanges();
+                _dbContext.Student.Add(student);
+                _dbContext.SaveChanges();
                 return student;
             }
             return null;
@@ -39,14 +39,40 @@ namespace WebAPICore.Services
 
         public IEnumerable<Course> GetCourse()
         {
-            var course = dbContext.Course.ToList();
+            var course = _dbContext.Course.ToList();
             return course;
         }
 
         public IEnumerable<Student> GetStudent()
         {
-            var student = dbContext.Student.ToList();
+            var student = _dbContext.Student.ToList();
             return student;
+        }
+
+        public bool DeleteStudent(Student student)
+        {
+            _dbContext.Remove(student);
+            _dbContext.SaveChanges();
+
+            return true;
+        }
+
+        public bool UpdateStudent(Student student)
+        {
+            _dbContext.Update(student);
+            _dbContext.SaveChanges();
+
+            return true;
+        }
+
+        public bool EnrollStudent(Student student, Course course)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool UnEnrollStudent(Student student, Course course)
+        {
+            throw new NotImplementedException();
         }
     }
 }
