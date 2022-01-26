@@ -8,6 +8,9 @@ using WebAPICore.IServices;
 using WebAPICore.Models;
 using Aspose.Cells;
 using System.Net.Http;
+using System.IO;
+using System.Data;
+using ClosedXML.Excel;
 
 namespace WebAPICore.Controllers
 {
@@ -56,6 +59,13 @@ namespace WebAPICore.Controllers
             return professorService.DeleteProfessor(id);
         }
 
+        [HttpGet]
+        [Route("[action]")]
+        [Route("api/Professor/ExportToExcell")]
+        public FileResult ExportToExcel()
+        {
+            return professorService.ExportToExcell();
+        }
 
         [HttpGet]
         [Route("[action]")]
@@ -71,6 +81,14 @@ namespace WebAPICore.Controllers
         public HttpResponseMessage CreateSheet(int id)
         {
             return professorService.CreateSheet(id);
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        [Route("api/Professor/AddMark")]
+        public Mark AddMark(int studentId, int courseId, int mark, DateTime date, string comment)
+        {
+            return professorService.AddMark(studentId, courseId, mark, date, comment);
         }
     }
 }

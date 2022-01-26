@@ -15,15 +15,16 @@ namespace WebAPICore.Services
         {
             _dbContext = db;
         }
-        public Course AddCourse(Course course)
+
+        public Course AddCourse(int subjectId, int professorId)
         {
-            if (course != null)
-            {
-                _dbContext.Course.Add(course);
-                _dbContext.SaveChanges();
-                return course;
-            }
-            return null;
+            Course course = new Course();
+            course.ProfessorId = subjectId;
+            course.SubjectId = professorId;
+            _dbContext.Course.Add(course);
+            _dbContext.SaveChanges();
+
+            return course;
         }
 
         public Student AddStudent(Student student)
@@ -65,17 +66,37 @@ namespace WebAPICore.Services
             return true;
         }
 
-        public bool EnrollStudent(Student student, Course course)
+        public StudentCourse EnrollStudent(int studentId, int courseId)
         {
-            var studentCourse = new StudentCourse { CourseId = course.Id, StudentId = student.Id };
+            var studentCourse = new StudentCourse { CourseId = courseId, StudentId = studentId };
             _dbContext.StudentCourse.Add(studentCourse);
             _dbContext.SaveChanges();
-            return true;
+            return studentCourse;
         }
 
-        public bool UnEnrollStudent(Student student, Course course)
+        public StudentCourse UnEnrollStudent(int studentId, int courseId)
         {
-            throw new NotImplementedException();
+            var studentCourse = new StudentCourse { CourseId = courseId, StudentId = studentId };
+            _dbContext.StudentCourse.Remove(studentCourse);
+            _dbContext.SaveChanges();
+            return studentCourse;
+        }
+
+        public IEnumerable<Subject> GetSubject()
+        {
+            var subject = _dbContext.Subject.ToList();
+            return subject;
+        }
+
+        public Professor AddProfessor(Professor professor)
+        {
+            if (professor != null)
+            {
+                _dbContext.Professor.Add(professor);
+                _dbContext.SaveChanges();
+                return professor;
+            }
+            return null;
         }
     }
 }

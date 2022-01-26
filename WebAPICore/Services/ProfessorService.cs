@@ -11,6 +11,7 @@ using System.IO;
 using System.Net.Http;
 using System.Net;
 using System.Net.Http.Headers;
+using ClosedXML.Excel;
 
 namespace WebAPICore.Services
 {
@@ -22,9 +23,18 @@ namespace WebAPICore.Services
             _dbContext = db;
         }
 
-        public bool AddMark(Student student, Course course, int mark)
+        public Mark AddMark(int studentId, int courseId, int mark, DateTime date, string comment)
         {
-            throw new NotImplementedException();
+            Mark markm = new Mark();
+            markm.StudentId = studentId;
+            markm.CourseId = courseId;
+            markm.Mark1 = mark;
+            markm.Date = date;
+            markm.Comment = comment;
+            _dbContext.Mark.Add(markm);
+            _dbContext.SaveChanges();
+
+            return markm;
         }
 
         public Professor AddProfessor(Professor professor)
@@ -101,5 +111,25 @@ namespace WebAPICore.Services
             return response;
         }
 
+        public FileResult ExportToExcell()
+        {
+            using (XLWorkbook wb = new XLWorkbook()) //Install ClosedXml from Nuget for XLWorkbook  
+            {
+                var worksheet = wb.Worksheets.Add("Sample Sheet");
+                worksheet.Cell("A1").Value = "Hello World!";
+                worksheet.Cell("A2").FormulaA1 = "=MID(A1, 7, 5)";
+                wb.SaveAs("HelloWorld.xlsx");
+                using (MemoryStream stream = new MemoryStream()) //using System.IO;  
+                {
+                    wb.SaveAs(stream);
+                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "ExcelFile.xlsx");
+                }
+            }
+        }
+
+        private FileResult File(byte[] vs, string v1, string v2)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

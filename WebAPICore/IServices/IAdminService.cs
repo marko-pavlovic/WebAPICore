@@ -9,12 +9,14 @@ namespace WebAPICore.IServices
     public interface IAdminService
     {
         IEnumerable<Course> GetCourse();
-        Course AddCourse(Course course);
+        Course AddCourse(int subjectId, int professorId);
         IEnumerable<Student> GetStudent();
         Student AddStudent(Student student);
         bool UpdateStudent(Student student);
         bool DeleteStudent(Student student);
-        bool EnrollStudent(Student student, Course course);
-        bool UnEnrollStudent(Student student, Course course);
+        StudentCourse EnrollStudent(int studentId, int courseId);
+        StudentCourse UnEnrollStudent(int studentId, int courseId);
+        IEnumerable<Subject> GetSubject();
+        Professor AddProfessor(Professor professor);
     }
 }
