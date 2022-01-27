@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebAPICore.IServices;
 using WebAPICore.Models;
 
 namespace WebAPICore.Services
 {
-    public class StudentService : IStudentService
+    public class StudentService
     {
         APICoreDBContext _dbContext;
         public StudentService(APICoreDBContext db)

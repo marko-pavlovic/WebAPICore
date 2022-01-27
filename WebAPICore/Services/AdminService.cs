@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebAPICore.IServices;
 using WebAPICore.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace WebAPICore.Services
 {
-    public class AdminService : IAdminService
+    public class AdminService
     {
         APICoreDBContext _dbContext;
         public AdminService(APICoreDBContext db)

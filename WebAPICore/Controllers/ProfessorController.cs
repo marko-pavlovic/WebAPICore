@@ -4,13 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebAPICore.IServices;
 using WebAPICore.Models;
 using Aspose.Cells;
 using System.Net.Http;
 using System.IO;
 using System.Data;
 using ClosedXML.Excel;
+using WebAPICore.Services;
+using WebAPICore.UIModels;
 
 namespace WebAPICore.Controllers
 {
@@ -18,8 +19,8 @@ namespace WebAPICore.Controllers
     [ApiController]
     public class ProfessorController : ControllerBase
     {
-        private readonly IProfessorService professorService;
-        public ProfessorController(IProfessorService professor)
+        private readonly ProfessorService professorService;
+        public ProfessorController(ProfessorService professor)
         {
             professorService = professor;
         }
@@ -86,9 +87,9 @@ namespace WebAPICore.Controllers
         [HttpGet]
         [Route("[action]")]
         [Route("api/Professor/AddMark")]
-        public Mark AddMark(int studentId, int courseId, int mark, DateTime date, string comment)
+        public Mark AddMark([FromQuery] AddMarkModel model)
         {
-            return professorService.AddMark(studentId, courseId, mark, date, comment);
+            return professorService.AddMark(model.StudentId, model.CourseId, model.Mark, model.Date, model.Comment);
         }
     }
 }

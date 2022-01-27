@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebAPICore.IServices;
 using WebAPICore.Models;
 using Aspose.Cells;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +14,7 @@ using ClosedXML.Excel;
 
 namespace WebAPICore.Services
 {
-    public class ProfessorService: IProfessorService
+    public class ProfessorService
     {
         APICoreDBContext _dbContext;
         public ProfessorService(APICoreDBContext db)
@@ -29,7 +28,7 @@ namespace WebAPICore.Services
             markm.StudentId = studentId;
             markm.CourseId = courseId;
             markm.Mark1 = mark;
-            markm.Date = date;
+            markm.Date = date; 
             markm.Comment = comment;
             _dbContext.Mark.Add(markm);
             _dbContext.SaveChanges();

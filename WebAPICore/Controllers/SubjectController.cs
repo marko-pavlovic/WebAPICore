@@ -4,8 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebAPICore.IServices;
 using WebAPICore.Models;
+using WebAPICore.Services;
 
 namespace WebAPICore.Controllers
 {
@@ -13,8 +13,8 @@ namespace WebAPICore.Controllers
     [ApiController]
     public class SubjectController : ControllerBase
     {
-        private readonly ISubjectService subjectService;
-        public SubjectController(ISubjectService subject)
+        private readonly SubjectService subjectService;
+        public SubjectController(SubjectService subject)
         {
             subjectService = subject;
         }

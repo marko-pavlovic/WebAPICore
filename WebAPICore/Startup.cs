@@ -6,12 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using WebAPICore.IServices;
 using WebAPICore.Models;
 using WebAPICore.Services;
 
@@ -35,11 +29,11 @@ namespace WebAPICore
             services.AddDbContext<APICoreDBContext>(options =>
             options.UseSqlServer(Configuration["DbConnection"]));
 
-            services.AddTransient<ISubjectService, SubjectService>();
-            services.AddTransient<IStudentService, StudentService>();
-            services.AddTransient<IProfessorService, ProfessorService>();
-            services.AddTransient<ICourseService, CourseService>();
-            services.AddTransient<IAdminService, AdminService>();
+            services.AddTransient<SubjectService>();
+            services.AddTransient<StudentService>();
+            services.AddTransient<ProfessorService>();
+            services.AddTransient<CourseService>();
+            services.AddTransient<AdminService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -3,12 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebAPICore.IServices;
 using WebAPICore.Models;
 
 namespace WebAPICore.Services
 {
-    public class SubjectService : ISubjectService
+    public class SubjectService
     {
         APICoreDBContext _dbContext;
         public SubjectService(APICoreDBContext db)

@@ -4,8 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebAPICore.IServices;
 using WebAPICore.Models;
+using WebAPICore.Services;
 
 namespace WebAPICore.Controllers
 {
@@ -13,63 +13,63 @@ namespace WebAPICore.Controllers
     [ApiController]
     public class AdminController : ControllerBase
     {
-        private IAdminService adminService;
+        private AdminService adminService;
 
-        public AdminController(IAdminService admin)
+        public AdminController(AdminService admin)
         {
             adminService = admin;
         }
 
-        [HttpGet("AddCourse")]
+        [HttpGet("add-course")]
         public Course AddCourse(int subjectId, int professorId)
         {
             return adminService.AddCourse(subjectId, professorId);
         }
 
-        [HttpPost("AddStudent")]
+        [HttpPost("add-student")]
         public Student AddStudent(Student student)
         {
             return adminService.AddStudent(student);
         }
 
-        [HttpGet("GetStudents")]
+        [HttpGet("get-students")]
         public IEnumerable<Student> GetStudent()
         {
             return adminService.GetStudent();
         }
 
-        [HttpGet("GetCourses")]
+        [HttpGet("get-courses")]
         public IEnumerable<Course> GetCourse()
         {
             return adminService.GetCourse();
         }
 
-        [HttpPut("EditStudent")]
+        [HttpPut("edit-student")]
         public bool EditStudent(Student student)
         {
             return adminService.UpdateStudent(student);
         }
 
 
-        [HttpDelete("DeleteStudent")]
+        [HttpDelete("delete-student")]
         public bool DeleteStudent(Student student)
         {
             return adminService.DeleteStudent(student);
         }
 
-        [HttpPost("AddProfessor")]
+        [HttpPost("add-professor")]
         public Professor AddProfessor(Professor professor)
         {
             return adminService.AddProfessor(professor);
         }
 
-        [HttpGet("EnrollStudent")]
+        [HttpGet("enroll-student")]
         public StudentCourse EnrollStudent(int studentId, int courseId)
         {
             return adminService.EnrollStudent(studentId, courseId);
         }
 
-        [HttpGet("UnEnrollStudent")]
+        [HttpGet("unenroll-Student")]
         public StudentCourse UnEnrollStudent(int studentId, int courseId)
         {
             return adminService.EnrollStudent(studentId, courseId);
