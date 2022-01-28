@@ -25,71 +25,79 @@ namespace WebAPICore.Controllers
             professorService = professor;
         }
 
-        [HttpGet]
-        [Route("[action]")]
-        [Route("api/Professor/GetProfessor")]
+        [HttpGet("get-professors")]
         public IEnumerable<Professor> GetProfessor()
         {
             return professorService.GetProfessor();
         }
 
 
-        [HttpPost]
-        [Route("[action]")]
-        [Route("api/Professor/AddProfessor")]
+        [HttpPost("add-professor")]
         public Professor AddProfessor(Professor professor)
         {
             return professorService.AddProfessor(professor);
         }
 
 
-        [HttpPut]
-        [Route("[action]")]
-        [Route("api/Professor/EditProfessor")]
+        [HttpPut("update-professor")]
         public Professor EditProfessor(Professor professor)
         {
             return professorService.UpdateProfessor(professor);
         }
 
 
-        [HttpDelete]
-        [Route("[action]")]
-        [Route("api/Professor/DeleteProfessor")]
+        [HttpDelete("delete-professor")]
         public Professor DeleteProfessor(int id)
         {
             return professorService.DeleteProfessor(id);
         }
 
-        [HttpGet]
-        [Route("[action]")]
-        [Route("api/Professor/ExportToExcell")]
-        public FileResult ExportToExcel()
+        [HttpGet("export-excell")]
+        public FileResult ExportXlsx(Course course)
         {
-            return professorService.ExportToExcell();
+            return professorService.ExportXlsx(course);
         }
 
-        [HttpGet]
-        [Route("[action]")]
-        [Route("api/Professor/GetProfessorId")]
+        [HttpGet("get-professor-by-id")]
         public Professor GetProfessorId(int id)
         {
             return professorService.GetProfessorById(id);
         }
 
-        [HttpPost]
-        [Route("[action]")]
-        [Route("api/Professor/CreateSheet")]
-        public HttpResponseMessage CreateSheet(int id)
-        {
-            return professorService.CreateSheet(id);
-        }
-
-        [HttpGet]
-        [Route("[action]")]
-        [Route("api/Professor/AddMark")]
+        [HttpGet("add-mark")]
         public Mark AddMark([FromQuery] AddMarkModel model)
         {
             return professorService.AddMark(model.StudentId, model.CourseId, model.Mark, model.Date, model.Comment);
         }
+
+        [HttpGet("teaching-courses")]
+        public IEnumerable<Course> TeachingCourses(int id)
+        {
+            return professorService.TeachingCourses(id);
+        }
+
+        [HttpGet("get-all-students")]
+        public IEnumerable<Student> GetAllStudents(int id)
+        {
+            return professorService.GetAllStudents(id);
+        }
+
+        [HttpGet("get-all-students-per-course")]
+        public Dictionary<int?, IEnumerable<Student>> GetAllStudentsPerCourse(int id)
+        {
+            return professorService.GetAllStudentsPerCourse(id);
+        }
+
+        [HttpPut("edit-mark")]
+        public bool EditMark([FromQuery] EditMarkModel model)
+        {
+            return professorService.EditMark(model.Id, model.StudentId, model.CourseId, model.Mark, model.Date, model.Comment);
+        }
+        [HttpGet("vrati-studente")]
+        public IEnumerable<Student> VratiStudente(int courseId)
+        {
+            return professorService.VratiStudente(courseId);
+        }
+        
     }
 }

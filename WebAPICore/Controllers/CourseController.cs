@@ -19,45 +19,35 @@ namespace WebAPICore.Controllers
             courseService = course;
         }
 
-        [HttpGet]
-        [Route("[action]")]
-        [Route("api/Course/GetCourse")]
+        [HttpGet("get-courses")]
         public IEnumerable<Course> GetCourse()
         {
             return courseService.GetCourse();
         }
 
 
-        [HttpPost]
-        [Route("[action]")]
-        [Route("api/Course/AddCourse")]
+        [HttpPost("add-course")]
         public Course AddCourse(Course course)
         {
             return courseService.AddCourse(course);
         }
 
 
-        [HttpPut]
-        [Route("[action]")]
-        [Route("api/Course/EditCourse")]
+        [HttpPut("edit-course")]
         public Course EditCourse(Course course)
         {
             return courseService.UpdateCourse(course);
         }
 
 
-        [HttpDelete]
-        [Route("[action]")]
-        [Route("api/Course/DeleteCourse")]
+        [HttpDelete("delete-course")]
         public Course DeleteCourse(int id)
         {
             return courseService.DeleteCourse(id);
         }
 
 
-        [HttpGet]
-        [Route("[action]")]
-        [Route("api/Course/GetCourseId")]
+        [HttpGet("get-course-by-id")]
         public Course GetCourseId(int id)
         {
             return courseService.GetCourseById(id);

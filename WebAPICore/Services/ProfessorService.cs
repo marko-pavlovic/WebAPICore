@@ -1,16 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Aspose.Cells;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using WebAPICore.Models;
-using Aspose.Cells;
-using Microsoft.AspNetCore.Mvc;
 using System.IO;
-using System.Net.Http;
-using System.Net;
-using System.Net.Http.Headers;
-using ClosedXML.Excel;
+using System.Linq;
+using WebAPICore.Models;
 
 namespace WebAPICore.Services
 {
@@ -34,6 +29,28 @@ namespace WebAPICore.Services
             _dbContext.SaveChanges();
 
             return markm;
+        }
+
+        public bool EditMark(int Id, int studentId, int courseId, int mark, DateTime date, string comment)
+        {
+            //var comm = _dbContext.Mark.FirstOrDefault(x => x.Id == Id).Comment;   // ne znam kako
+            if (comment == null)
+            {
+                return false;
+            }
+            else
+            {
+                Mark markm = new Mark();
+                markm.Id = Id;
+                markm.StudentId = studentId;
+                markm.CourseId = courseId;
+                markm.Mark1 = mark;
+                markm.Date = date;
+                markm.Comment = comment;
+                _dbContext.Entry(markm).State = EntityState.Modified;
+                _dbContext.SaveChanges();
+                return true;
+            }
         }
 
         public Professor AddProfessor(Professor professor)
@@ -84,51 +101,92 @@ namespace WebAPICore.Services
             return professor;
         }
 
-        public HttpResponseMessage CreateSheet(int id)
+        public IEnumerable<Course> TeachingCourses(int id)
         {
+            var courses = _dbContext.Course.Where(x => x.ProfessorId == id).ToList();
+            return courses;
+        }
+
+        public IEnumerable<Student> GetAllStudents(int id)
+        {
+            var students = _dbContext.ProfessorCourse
+                .Where(pc => pc.ProfessorId == id)
+                .Select(pc => new
+                {
+                    Students = pc.Course.StudentCourse.Select(sc => sc.Student)
+                })
+                .SelectMany(pc => pc.Students)
+                .Distinct() //ukoiko ne zelimo duplikate
+                .AsEnumerable();
+
+            return students;
+        }
+
+        public Dictionary<int?, IEnumerable<Student>> GetAllStudentsPerCourse(int id)
+        {
+            var students = _dbContext.ProfessorCourse
+                .Where(pc => pc.ProfessorId == id)
+                .ToDictionary(
+                    pc => pc.CourseId,
+                    pc => pc.Course.StudentCourse.Select(sc => sc.Student));
+
+            return students;
+        }
+
+        public void UpdateAverageRating(int studentId)
+        {
+            var marks = _dbContext.Mark.Where(x => x.StudentId == studentId);
+            decimal ar = 0;
+            foreach (var mark in marks)
+            {
+                ar += (decimal)mark.Mark1;
+                ar /= marks.Count();
+            }
+        }
+
+        public IEnumerable<Student> VratiStudente(int courseId)
+        {
+            var students = _dbContext.StudentCourse
+                .Where(sc => sc.CourseId == courseId)
+                
+                .Select(sc => sc.Student)
+                .Distinct()
+                .AsEnumerable();
+
+            return students;
+        }
+
+        public FileContentResult ExportXlsx(Course course)
+        {
+            var students = _dbContext.StudentCourse
+                .Where(sc => sc.CourseId == course.Id)
+                .Select(sc => new
+                {
+                    Students = sc.Student
+                })
+                .Distinct() //ukoiko ne zelimo duplikate
+                .AsEnumerable();
+
             Workbook temp = new Workbook();
             Worksheet ws = temp.Worksheets[0];
             Cell cell = ws.Cells["A1"];
 
-            // Input the "Hello World!" text into the "A1" cell.
             cell.PutValue("Hello World!");
 
-            // Used to test the excel populates correctly
-            temp.Save("Excel.xlsx", SaveFormat.Xlsx);
+            temp.Save("report.xlsx", SaveFormat.Xlsx);
 
-            MemoryStream ms = new MemoryStream();
-            temp.Save(ms, SaveFormat.Xlsx);
-            byte[] bytes = ms.ToArray();
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "report.xlsx");
+            var file = new FileInfo(path);
+            var bytes = File.ReadAllBytes(file.FullName);
+            var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
-            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-            response.Content = new ByteArrayContent(bytes);
-            response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-            response.Content.Headers.ContentDisposition.FileName = "fajl" + ".xlsx";
-            response.Content.Headers.ContentType = new MediaTypeHeaderValue("Application/x-msexcel");
-            
-             
-            return response;
-        }
-
-        public FileResult ExportToExcell()
-        {
-            using (XLWorkbook wb = new XLWorkbook()) //Install ClosedXml from Nuget for XLWorkbook  
+            var fileContentResult = new FileContentResult(bytes, contentType)
             {
-                var worksheet = wb.Worksheets.Add("Sample Sheet");
-                worksheet.Cell("A1").Value = "Hello World!";
-                worksheet.Cell("A2").FormulaA1 = "=MID(A1, 7, 5)";
-                wb.SaveAs("HelloWorld.xlsx");
-                using (MemoryStream stream = new MemoryStream()) //using System.IO;  
-                {
-                    wb.SaveAs(stream);
-                    return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "ExcelFile.xlsx");
-                }
-            }
-        }
+                FileDownloadName = file.Name
+            };
 
-        private FileResult File(byte[] vs, string v1, string v2)
-        {
-            throw new NotImplementedException();
+            return fileContentResult;
+
         }
     }
 }

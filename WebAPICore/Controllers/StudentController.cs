@@ -19,61 +19,47 @@ namespace WebAPICore.Controllers
             studentService = student;
         }
 
-        [HttpGet]
-        [Route("[action]")]
-        [Route("api/Student/GetStudent")]
+        [HttpGet("get-students")]
         public IEnumerable<Student> GetStudent()
         {
             return studentService.GetStudent();
         }
 
-        [HttpPost]
-        [Route("[action]")]
-        [Route("api/Student/AddStudent")]
+        [HttpPost("add-student")]
         public int AddStudent(Student student)
         {
             return studentService.AddStudent(student);
         }
 
 
-        [HttpPut]
-        [Route("[action]")]
-        [Route("api/Student/EditStudent")]
+        [HttpPut("edit-student")]
         public bool EditStudent(Student student)
         {
             return studentService.UpdateStudent(student);
         }
 
 
-        [HttpDelete]
-        [Route("[action]")]
-        [Route("api/Student/DeleteStudent")]
+        [HttpDelete("delete-student")]
         public bool DeleteStudent(Student student)
         {
             return studentService.DeleteStudent(student);
         }
 
 
-        [HttpGet]
-        [Route("[action]")]
-        [Route("api/Student/GetStudentId")]
+        [HttpGet("get-student-by-id")]
         public Student GetStudentId(int id)
         {
             return studentService.GetStudentById(id);
         }
 
-        [HttpGet]
-        [Route("[action]")]
-        [Route("api/Student/AttendingCourses")]
+        [HttpGet("attending-courses")]
         public IEnumerable<Course> AttendingCourses(int id)
         {
             return studentService.AttendingCourses(id);
         }
 
-        [HttpGet]
-        [Route("[action]")]
-        [Route("api/Student/CourseMark")]
-        public IEnumerable<Mark> CourseMark(int id, int cId)
+        [HttpGet("course-marks")]
+        public IEnumerable<Mark> CourseMarks(int id, int cId)
         {
             return studentService.Marks(id, cId);
         }

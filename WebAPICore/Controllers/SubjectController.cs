@@ -19,45 +19,35 @@ namespace WebAPICore.Controllers
             subjectService = subject;
         }
 
-        [HttpGet]
-        [Route("[action]")]
-        [Route("api/Subject/GetSubject")]
+        [HttpGet("get-subjects")]
         public IEnumerable<Subject> GetSubject()
         {
             return subjectService.GetSubject();
         }
 
 
-        [HttpPost]
-        [Route("[action]")]
-        [Route("api/Subject/AddSubject")]
+        [HttpPost("add-subject")]
         public Subject AddSubject(Subject subject)
         {
             return subjectService.AddSubject(subject);
         }
 
 
-        [HttpPut]
-        [Route("[action]")]
-        [Route("api/Subject/EditSubject")]
+        [HttpPut("edit-subject")]
         public Subject EditSubject(Subject subject)
         {
             return subjectService.UpdateSubject(subject);
         }
 
 
-        [HttpDelete]
-        [Route("[action]")]
-        [Route("api/Subject/DeleteSubject")]
+        [HttpDelete("delete-subject")]
         public Subject DeleteSubject(int id)
         {
             return subjectService.DeleteSubject(id);
         }
 
 
-        [HttpGet]
-        [Route("[action]")]
-        [Route("api/Subject/GetSubjectId")]
+        [HttpGet("get-subject-by-id")]
         public Subject GetSubjectId(int id)
         {
             return subjectService.GetSubjectById(id);
