@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WebAPICore.Models
+namespace WebAPICore.DbModels
 {
     public partial class Course
     {

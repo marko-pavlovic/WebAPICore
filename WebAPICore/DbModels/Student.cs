@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WebAPICore.Models
+namespace WebAPICore.DbModels
 {
     public partial class Student
     {
@@ -19,7 +19,9 @@ namespace WebAPICore.Models
         public string Pin { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+        public string UserId { get; set; }
 
+        public virtual AspNetUsers User { get; set; }
         public virtual ICollection<Mark> Mark { get; set; }
         public virtual ICollection<StudentCourse> StudentCourse { get; set; }
     }

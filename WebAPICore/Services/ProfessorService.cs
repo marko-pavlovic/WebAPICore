@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using WebAPICore.Models;
+using WebAPICore.DbModels;
 
 namespace WebAPICore.Services
 {
@@ -49,8 +49,12 @@ namespace WebAPICore.Services
                 markm.Comment = comment;
                 _dbContext.Entry(markm).State = EntityState.Modified;
                 _dbContext.SaveChanges();
+
+                UpdateAverageRating(studentId);
+
                 return true;
             }
+            
         }
 
         public Professor AddProfessor(Professor professor)
@@ -144,13 +148,12 @@ namespace WebAPICore.Services
             }
         }
 
-        public IEnumerable<Student> VratiStudente(int courseId)
+        public IEnumerable<Student> GetStudentsByCourse(int courseId)
         {
             var students = _dbContext.StudentCourse
                 .Where(sc => sc.CourseId == courseId)
-                
+
                 .Select(sc => sc.Student)
-                .Distinct()
                 .AsEnumerable();
 
             return students;
@@ -160,18 +163,36 @@ namespace WebAPICore.Services
         {
             var students = _dbContext.StudentCourse
                 .Where(sc => sc.CourseId == course.Id)
-                .Select(sc => new
-                {
-                    Students = sc.Student
-                })
-                .Distinct() //ukoiko ne zelimo duplikate
+
+                .Select(sc => sc.Student)
                 .AsEnumerable();
 
             Workbook temp = new Workbook();
             Worksheet ws = temp.Worksheets[0];
-            Cell cell = ws.Cells["A1"];
+            //Cell cell = ws.Cells["A1"];
+            
+            Cell cell = ws.Cells[0, 0];
+            cell.PutValue("Name");
 
-            cell.PutValue("Hello World!");
+            cell = ws.Cells[0, 1];
+            cell.PutValue("Year");
+
+            cell = ws.Cells[0, 2];
+            cell.PutValue("Average rating");
+
+            foreach (Student s in students)
+            {
+                
+                cell = ws.Cells[1, 0];
+                cell.PutValue(s.Name + " " + s.Surname);
+
+                cell = ws.Cells[1, 1];
+                cell.PutValue(s.Year);
+
+                cell = ws.Cells[1, 2];
+                cell.PutValue(s.AverageRating);
+            }
+
 
             temp.Save("report.xlsx", SaveFormat.Xlsx);
 

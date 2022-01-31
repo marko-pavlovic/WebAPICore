@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebAPICore.Models;
+using WebAPICore.DbModels;
 using Aspose.Cells;
 using System.Net.Http;
 using System.IO;
@@ -93,10 +93,10 @@ namespace WebAPICore.Controllers
         {
             return professorService.EditMark(model.Id, model.StudentId, model.CourseId, model.Mark, model.Date, model.Comment);
         }
-        [HttpGet("vrati-studente")]
-        public IEnumerable<Student> VratiStudente(int courseId)
+        [HttpGet("get-students-by-course/{courseId}")]
+        public IEnumerable<Student> GetStudentsByCourse(int courseId)
         {
-            return professorService.VratiStudente(courseId);
+            return professorService.GetStudentsByCourse(courseId);
         }
         
     }
