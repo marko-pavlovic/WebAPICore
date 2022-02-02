@@ -12,9 +12,11 @@ namespace WebAPICore.Services
     public class ProfessorService
     {
         APICoreDBContext _dbContext;
-        public ProfessorService(APICoreDBContext db)
+        APICoreDBContext _dbContext2;
+        public ProfessorService(APICoreDBContext db, APICoreDBContext db2)
         {
             _dbContext = db;
+            _dbContext2 = db2;
         }
 
         public Mark AddMark(int studentId, int courseId, int mark, DateTime date, string comment)
@@ -50,7 +52,7 @@ namespace WebAPICore.Services
                 _dbContext.Entry(markm).State = EntityState.Modified;
                 _dbContext.SaveChanges();
 
-                UpdateAverageRating(studentId);
+                //UpdateAverageRating(studentId);
 
                 return true;
             }
@@ -111,7 +113,7 @@ namespace WebAPICore.Services
             return courses;
         }
 
-        public IEnumerable<Student> GetAllStudents(int id)
+        public IEnumerable<Student> GetAllTeachingStudents(int id)
         {
             var students = _dbContext.ProfessorCourse
                 .Where(pc => pc.ProfessorId == id)
@@ -137,15 +139,21 @@ namespace WebAPICore.Services
             return students;
         }
 
-        public void UpdateAverageRating(int studentId)
+        public decimal AverageRating(IEnumerable<Mark> marks)
         {
-            var marks = _dbContext.Mark.Where(x => x.StudentId == studentId);
             decimal ar = 0;
             foreach (var mark in marks)
-            {
                 ar += (decimal)mark.Mark1;
-                ar /= marks.Count();
-            }
+              
+            ar /= marks.Count();
+            return ar;
+            //var marks = _dbContext.Mark.Where(x => x.StudentId == studentId);
+            //decimal ar = 0;
+            //foreach (var mark in marks)
+            //{
+            //    ar += (decimal)mark.Mark1;
+            //    ar /= marks.Count();
+            //}
         }
 
         public IEnumerable<Student> GetStudentsByCourse(int courseId)
@@ -161,11 +169,17 @@ namespace WebAPICore.Services
 
         public FileContentResult ExportXlsx(Course course)
         {
-            var students = _dbContext.StudentCourse
+            var studentsWithAvgMarks = _dbContext.StudentCourse
                 .Where(sc => sc.CourseId == course.Id)
-
-                .Select(sc => sc.Student)
+                .Select(sc => new 
+                {
+                    sc.Student,
+                    AvgMark = sc.Student.Mark
+                        .Where(m => m.CourseId == course.Id)
+                        .Average(m => m.Mark1)
+                })
                 .AsEnumerable();
+
 
             Workbook temp = new Workbook();
             Worksheet ws = temp.Worksheets[0];
@@ -180,17 +194,22 @@ namespace WebAPICore.Services
             cell = ws.Cells[0, 2];
             cell.PutValue("Average rating");
 
-            foreach (Student s in students)
+            foreach (var s in studentsWithAvgMarks)
             {
-                
                 cell = ws.Cells[1, 0];
-                cell.PutValue(s.Name + " " + s.Surname);
+                cell.PutValue(s.Student.Name + " " + s.Student.Surname);
 
                 cell = ws.Cells[1, 1];
-                cell.PutValue(s.Year);
+                cell.PutValue(s.Student.Year);
 
                 cell = ws.Cells[1, 2];
-                cell.PutValue(s.AverageRating);
+                cell.PutValue(s.AvgMark);
+
+                if(s.AvgMark >= 2.50)
+                {
+                    cell = ws.Cells[1, 3];
+                    cell.PutValue("Passed");
+                }
             }
 
 

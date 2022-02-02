@@ -47,8 +47,8 @@ namespace WebAPICore.Controllers
         }
 
 
-        [HttpGet("get-student-by-id")]
-        public Student GetStudentId(int id)
+        [HttpGet("get-student-by-id/{id}")]
+        public Student GetStudentById(int id)
         {
             return studentService.GetStudentById(id);
         }
@@ -64,6 +64,12 @@ namespace WebAPICore.Controllers
         {
             return studentService.Marks(id, cId);
         }
-        
+
+        [HttpGet("get-course-professor")]
+        public Professor GetCourseProfessor(Course course)
+        {
+            return studentService.GetCourseProfessor(course);
+        }
+
     }
 }

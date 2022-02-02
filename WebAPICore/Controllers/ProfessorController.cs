@@ -52,7 +52,7 @@ namespace WebAPICore.Controllers
             return professorService.DeleteProfessor(id);
         }
 
-        [HttpGet("export-excell")]
+        [HttpPost("get-student-reports")]
         public FileResult ExportXlsx(Course course)
         {
             return professorService.ExportXlsx(course);
@@ -76,10 +76,10 @@ namespace WebAPICore.Controllers
             return professorService.TeachingCourses(id);
         }
 
-        [HttpGet("get-all-students")]
-        public IEnumerable<Student> GetAllStudents(int id)
+        [HttpGet("get-all-teaching-students")]
+        public IEnumerable<Student> GetAllTeachingStudents(int id)
         {
-            return professorService.GetAllStudents(id);
+            return professorService.GetAllTeachingStudents(id);
         }
 
         [HttpGet("get-all-students-per-course")]

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace WebAPICore.DbModels
 {
@@ -11,9 +12,11 @@ namespace WebAPICore.DbModels
             ProfessorCourse = new HashSet<ProfessorCourse>();
             StudentCourse = new HashSet<StudentCourse>();
         }
-
+        [JsonPropertyName("id")]
         public int Id { get; set; }
+        [JsonPropertyName("subjectid")]
         public int? SubjectId { get; set; }
+        [JsonPropertyName("professorid")]
         public int? ProfessorId { get; set; }
 
         public virtual Subject Subject { get; set; }

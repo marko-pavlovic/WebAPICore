@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -82,6 +83,13 @@ namespace WebAPICore.Services
                 .AsEnumerable();
 
             return marks;
+        }
+
+        internal Professor GetCourseProfessor(Course course)
+        {
+            var professor = _dbContext.Professor
+                .FirstOrDefault(p => p.Id == course.ProfessorId);
+            return professor;
         }
     }
 }

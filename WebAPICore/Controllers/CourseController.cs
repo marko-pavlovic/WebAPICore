@@ -47,7 +47,7 @@ namespace WebAPICore.Controllers
         }
 
 
-        [HttpGet("get-course-by- id")]
+        [HttpGet("get-course-by-id")]
         public Course GetCourseId(int id)
         {
             return courseService.GetCourseById(id);

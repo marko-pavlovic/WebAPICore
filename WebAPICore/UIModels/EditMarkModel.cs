@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace WebAPICore.UIModels
-{
+{   
     public class EditMarkModel
     {
         public int Id { get; set; }

@@ -18,7 +18,6 @@ namespace WebAPICore.Services
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly ILogger _logger;
 
         public UserService(
             UserManager<ApplicationUser> userManager,

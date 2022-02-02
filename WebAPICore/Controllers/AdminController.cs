@@ -52,7 +52,7 @@ namespace WebAPICore.Controllers
 
 
         [HttpDelete("delete-student")]
-        public bool DeleteStudent(Student student)
+        public bool DeleteStudent([FromBody] Student student)
         {
             return adminService.DeleteStudent(student);
         }
@@ -64,12 +64,12 @@ namespace WebAPICore.Controllers
         }
 
         [HttpGet("enroll-student")]
-        public StudentCourse EnrollStudent(int studentId, int courseId)
+        public StudentCourse EnrollStudent([FromQuery] int studentId, [FromQuery] int courseId)
         {
             return adminService.EnrollStudent(studentId, courseId);
         }
 
-        [HttpGet("unenroll-Student")]
+        [HttpGet("unenroll-student")]
         public StudentCourse UnEnrollStudent(int studentId, int courseId)
         {
             return adminService.EnrollStudent(studentId, courseId);

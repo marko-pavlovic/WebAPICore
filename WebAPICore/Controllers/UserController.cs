@@ -69,23 +69,7 @@ namespace WebAPICore.Controllers
             return Ok(result);
         }
 
-        [AllowAnonymous]
-        [HttpGet("")]
-        public async Task<IActionResult> GetSellers()
-        {
-            var result = await _userService.GetForRoleAsync(ApiRoles.);
-
-            return Ok(result);
-        }
-
-        [AllowAnonymous]
-        [HttpGet("")]
-        public async Task<IActionResult> GetOrganizerers()
-        {
-            var result = await _userService.GetForRoleAsync(ApiRoles.);
-
-            return Ok(result);
-        }
+        //get org / get sel
 
         [Authorize(ApiClaims.USERS)]
         [HttpPatch("{userName}/update-role")]
