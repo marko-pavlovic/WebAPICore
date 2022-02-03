@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebAPICore.DbModels;
-using WebAPICore.Services;
+using DBCommunication.DbModels;
+using DBCommunication.Permisions;
+using DBCommunication.Services;
 
 namespace WebAPICore.Controllers
 {
+    [Authorize(ApiClaims.ADMIN)]
     [Route("api/[controller]")]
     [ApiController]
     public class AdminController : ControllerBase
@@ -45,16 +48,16 @@ namespace WebAPICore.Controllers
         }
 
         [HttpPut("edit-student")]
-        public bool EditStudent(Student student)
+        public Student EditStudent(Student student)
         {
             return adminService.UpdateStudent(student);
         }
 
 
         [HttpDelete("delete-student")]
-        public bool DeleteStudent([FromBody] Student student)
+        public bool DeleteStudent([FromQuery]int studentId)
         {
-            return adminService.DeleteStudent(student);
+            return adminService.DeleteStudent(studentId);
         }
 
         [HttpPost("add-professor")]
@@ -64,7 +67,7 @@ namespace WebAPICore.Controllers
         }
 
         [HttpGet("enroll-student")]
-        public StudentCourse EnrollStudent([FromQuery] int studentId, [FromQuery] int courseId)
+        public StudentCourse EnrollStudent(int studentId, int courseId)
         {
             return adminService.EnrollStudent(studentId, courseId);
         }

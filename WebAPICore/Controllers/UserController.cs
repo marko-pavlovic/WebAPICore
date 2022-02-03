@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using WebAPICore.Mappers;
-using WebAPICore.Models.User;
-using WebAPICore.Permisions;
-using WebAPICore.Services;
+using DBCommunication.Mappers;
+using DBCommunication.Models.User;
+using DBCommunication.Permisions;
+using DBCommunication.Services;
 
 namespace WebAPICore.Controllers
 {
@@ -25,9 +25,7 @@ namespace WebAPICore.Controllers
             _userService = userService;
         }
 
-        [Authorize(ApiClaims.USERS)]
-
-        [ProducesResponseType(typeof(List<string>), (int)HttpStatusCode.BadRequest)]
+        //[Authorize(ApiClaims.USERS)]
         [HttpPost]
         public async Task<IActionResult> Create(UserCreateModel userCreate)
         {

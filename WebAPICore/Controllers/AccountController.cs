@@ -7,10 +7,10 @@ using System.Net;
 using System.Security.Policy;
 using System.Threading.Tasks;
 using WebAPICore.Controllers;
-using WebAPICore.Mappers;
-using WebAPICore.Models.Account;
-using WebAPICore.Permisions;
-using WebAPICore.Services;
+using DBCommunication.Mappers;
+using DBCommunication.Models.Account;
+using DBCommunication.Permisions;
+using DBCommunication.Services;
 
 namespace WebAPICore.Api.Controllers
 {

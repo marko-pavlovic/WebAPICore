@@ -4,17 +4,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebAPICore.DbModels;
+using DBCommunication.DbModels;
 using Aspose.Cells;
 using System.Net.Http;
 using System.IO;
 using System.Data;
 using ClosedXML.Excel;
-using WebAPICore.Services;
+using DBCommunication.Services;
 using WebAPICore.UIModels;
+using Microsoft.AspNetCore.Authorization;
+using DBCommunication.Permisions;
 
 namespace WebAPICore.Controllers
 {
+    [Authorize(ApiClaims.PROFESSOR)]
     [Route("api/[controller]")]
     [ApiController]
     public class ProfessorController : ControllerBase
@@ -64,8 +67,8 @@ namespace WebAPICore.Controllers
             return professorService.GetProfessorById(id);
         }
 
-        [HttpGet("add-mark")]
-        public Mark AddMark([FromQuery] AddMarkModel model)
+        [HttpPost("add-mark")]
+        public Mark AddMark(AddMarkModel model)
         {
             return professorService.AddMark(model.StudentId, model.CourseId, model.Mark, model.Date, model.Comment);
         }
@@ -76,7 +79,7 @@ namespace WebAPICore.Controllers
             return professorService.TeachingCourses(id);
         }
 
-        [HttpGet("get-all-teaching-students")]
+        [HttpGet("teaching-students")]
         public IEnumerable<Student> GetAllTeachingStudents(int id)
         {
             return professorService.GetAllTeachingStudents(id);
@@ -89,7 +92,7 @@ namespace WebAPICore.Controllers
         }
 
         [HttpPut("edit-mark")]
-        public bool EditMark([FromQuery] EditMarkModel model)
+        public bool EditMark(EditMarkModel model) // fromquery bilo
         {
             return professorService.EditMark(model.Id, model.StudentId, model.CourseId, model.Mark, model.Date, model.Comment);
         }

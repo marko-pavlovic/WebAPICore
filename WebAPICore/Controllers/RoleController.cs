@@ -6,11 +6,11 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using WebAPICore.Controllers;
-using WebAPICore.Dtos.Role;
-using WebAPICore.Mappers;
-using WebAPICore.Models.Role;
-using WebAPICore.Permisions;
-using WebAPICore.Services;
+using DBCommunication.Dtos.Role;
+using DBCommunication.Mappers;
+using DBCommunication.Models.Role;
+using DBCommunication.Permisions;
+using DBCommunication.Services;
 
 namespace WebAPICore.Api.Controllers
 {

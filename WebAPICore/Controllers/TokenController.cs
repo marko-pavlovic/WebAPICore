@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using WebAPICore.Models.Token;
-using WebAPICore.Permisions;
-using WebAPICore.Services;
+using DBCommunication.Models.Token;
+using DBCommunication.Permisions;
+using DBCommunication.Services;
 
 namespace WebAPICore.Controllers
 {

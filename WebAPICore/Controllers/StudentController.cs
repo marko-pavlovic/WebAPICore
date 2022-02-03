@@ -1,15 +1,18 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebAPICore.DbModels;
-using WebAPICore.Models;
-using WebAPICore.Services;
+using DBCommunication.DbModels;
+using DBCommunication.Models;
+using DBCommunication.Permisions;
+using DBCommunication.Services;
 
 namespace WebAPICore.Controllers
 {
+    [Authorize(ApiClaims.STUDENT)]
     [Route("api/[controller]")]
     [ApiController]
     public class StudentController : ControllerBase
@@ -20,6 +23,7 @@ namespace WebAPICore.Controllers
             studentService = student;
         }
 
+        
         [HttpGet("get-students")]
         public IEnumerable<Student> GetStudent()
         {
@@ -65,7 +69,7 @@ namespace WebAPICore.Controllers
             return studentService.Marks(id, cId);
         }
 
-        [HttpGet("get-course-professor")]
+        [HttpPost("get-course-professor")]
         public Professor GetCourseProfessor(Course course)
         {
             return studentService.GetCourseProfessor(course);

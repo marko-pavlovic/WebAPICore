@@ -7,13 +7,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Text;
 using WebAPICore.Api.JsonSettings;
-using WebAPICore.DbModels;
-using WebAPICore.Identity;
-using WebAPICore.Permisions;
-using WebAPICore.Services;
+using DBCommunication.DbModels;
+using DBCommunication.Identity;
+using DBCommunication.Permisions;
+using DBCommunication.Services;
 
 namespace WebAPICore
 {
@@ -59,11 +60,16 @@ namespace WebAPICore
             services.AddDbContext<APICoreDBContext>(options =>
             options.UseSqlServer(Configuration["DbConnection"]));
 
-            services.AddTransient<SubjectService>();
-            services.AddTransient<StudentService>();
-            services.AddTransient<ProfessorService>();
-            services.AddTransient<CourseService>();
-            services.AddTransient<AdminService>();
+            services.AddScoped<SubjectService>();
+            services.AddScoped<StudentService>();
+            services.AddScoped<ProfessorService>();
+            services.AddScoped<CourseService>();
+            services.AddScoped<AdminService>();
+            services.AddScoped<AccountService>();
+            services.AddScoped<UserService>();
+            services.AddScoped<RoleService>();
+            services.AddScoped<TokenService>();
+            services.AddScoped<UserDataService>();
 
             var clientSecret = Configuration
                 .GetSection("JwtClientSecretJsonSettings")
@@ -96,6 +102,30 @@ namespace WebAPICore
                     options.AddPolicy(claim, policy => policy.RequireClaim("Permission", claim));
                 }
             });
+
+            services.AddSwaggerGen(doc =>
+            {
+                doc.SwaggerDoc("v1", new OpenApiInfo { Title = "Api", Description = "Swagger" });
+
+                doc.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
+                });
+
+                doc.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+                        },
+                        new string[] { }
+                    }
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -105,6 +135,12 @@ namespace WebAPICore
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(endpoint =>
+            {
+                endpoint.SwaggerEndpoint("/swagger/v1/swagger.json", "Web Api");
+            });
 
             app.UseHttpsRedirection();
 
